@@ -7,7 +7,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Configure API Key
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+# Configure API Key
+genai.configure(api_key=st.secrets["general"]["GEMINI_API_KEY"])
+
+# Your existing code here...
 
 # Create the model generation configuration
 generation_config = {
