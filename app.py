@@ -1,16 +1,8 @@
-import os
 import streamlit as st
 import google.generativeai as genai
-from dotenv import load_dotenv
 
-# Load environment variables from .env file
-load_dotenv()
-
-# Configure API Key
-# Configure API Key
+# Configure API Key from secrets
 genai.configure(api_key=st.secrets["general"]["GEMINI_API_KEY"])
-
-# Your existing code here...
 
 # Create the model generation configuration
 generation_config = {
@@ -40,7 +32,6 @@ st.markdown("""
     .main-title {
         font-size: 60px;
         color: #fafafa;
-            
         font-family: 'Courier New', Courier, monospace;
         text-align: center;
         background-color: #328fa8;
@@ -50,6 +41,13 @@ st.markdown("""
     }
     .sticker {
         text-align: center;
+    }
+    .text-box {
+        background-color: #f1f1f1;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 10px;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -71,11 +69,13 @@ with st.sidebar:
     antagonist = st.text_input("Antagonist", "Describe the main villain or opposing force")
 
     if st.button("Generate Document"):
+        # Generate content based on user input
         env_description = generate_content(f"Create a detailed description of a game environment based on this input: {game_environment}")
         protagonist_description = generate_content(f"Create a detailed description of a game protagonist based on this input: {protagonist}")
         antagonist_description = generate_content(f"Create a detailed description of a game antagonist based on this input: {antagonist}")
         game_story = generate_content(f"Create a detailed game story based on the following inputs:\nGame Environment: {env_description}\nProtagonist: {protagonist_description}\nAntagonist: {antagonist_description}")
 
+        # Store results in session state
         st.session_state.env_description = env_description
         st.session_state.protagonist_description = protagonist_description
         st.session_state.antagonist_description = antagonist_description
@@ -87,27 +87,27 @@ col1, col2 = st.columns(2)
 with col1:
     st.header("Game Environment")
     if 'env_description' in st.session_state:
-        st.write(st.session_state.env_description)
+        st.markdown(f"<div class='text-box'>{st.session_state.env_description}</div>", unsafe_allow_html=True)
     else:
         st.write("Waiting for input...")
 
 with col2:
     st.header("Game Story")
     if 'game_story' in st.session_state:
-        st.write(st.session_state.game_story)
+        st.markdown(f"<div class='text-box'>{st.session_state.game_story}</div>", unsafe_allow_html=True)
     else:
         st.write("Your game story will be generated based on the inputs provided.")
 
 with col1:
     st.header("Protagonist")
     if 'protagonist_description' in st.session_state:
-        st.write(st.session_state.protagonist_description)
+        st.markdown(f"<div class='text-box'>{st.session_state.protagonist_description}</div>", unsafe_allow_html=True)
     else:
         st.write("Waiting for input...")
 
 with col2:
     st.header("Antagonist")
     if 'antagonist_description' in st.session_state:
-        st.write(st.session_state.antagonist_description)
+        st.markdown(f"<div class='text-box'>{st.session_state.antagonist_description}</div>", unsafe_allow_html=True)
     else:
         st.write("Waiting for input...")
