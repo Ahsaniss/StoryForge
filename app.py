@@ -2,7 +2,7 @@ import streamlit as st
 import google.generativeai as genai
 
 # Configure API Key from secrets
-genai.configure(api_key=st.secrets["general"]["GEMINI_API_KEY"])
+genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
 
 # Create the model generation configuration
 generation_config = {
